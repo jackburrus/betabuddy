@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Wallet {
-	address: string;
+	address: `0x${string}`;
 	walletConnectUrl?: string;
 }
 

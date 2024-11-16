@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	IconButton,
 	Box,
@@ -14,21 +14,41 @@ import {
 	useDisclosure,
 	BoxProps,
 	FlexProps,
+	useToast,
 } from '@chakra-ui/react';
+import networksList from 'evm-rpcs-list';
 import { FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu, FiUsers, FiMessageCircle, FiUser } from 'react-icons/fi';
 import { IoWallet } from 'react-icons/io5';
-
+import { Core } from '@walletconnect/core';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import Wallets from './Wallets';
+import { WalletKit, IWalletKit } from '@reown/walletkit';
 import Users from './Users';
 import Chat from './Chat';
 import Profile from './Users';
+import { TxnDataType } from '@/types';
+import { useSafeInject } from '@/contexts/SafeInjectContext';
+import { SingleValue } from 'chakra-react-select';
+import { SelectedNetworkOption } from '@/types';
+import { ethers } from 'ethers';
+import { ProposalTypes, SessionTypes } from '@walletconnect/types';
+import axios from 'axios';
+import { parseUri } from '@walletconnect/utils';
 interface LinkItemProps {
 	name: string;
 	icon: IconType;
 }
+const WCMetadata = {
+	name: 'Impersonator',
+	description: 'Login to dapps as any address',
+	url: 'www.impersonator.xyz',
+	icons: ['https://www.impersonator.xyz/favicon.ico'],
+};
 
+const core = new Core({
+	projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
+});
 const LinkItems: Array<LinkItemProps> = [
 	{ name: 'Profile', icon: FiUser },
 	{ name: 'Wallets', icon: IoWallet },
@@ -36,12 +56,30 @@ const LinkItems: Array<LinkItemProps> = [
 	{ name: 'Settings', icon: FiSettings },
 ];
 
+const primaryNetworkIds = [
+	1, // ETH Mainnet
+	42161, // Arbitrum One
+	43114, // Avalanche
+	56, // BSC
+	250, // Fantom Opera
+	5, // Goerli Testnet
+	100, // Gnosis
+	10, // Optimism
+	137, // Polygon
+	8453, // Base
+];
+
+const primaryNetworkOptions = primaryNetworkIds.map((id) => {
+	return { chainId: id };
+});
+const allNetworksOptions = [...primaryNetworkOptions];
+
 interface SimpleSidebarProps {
 	onTabSelect: (tab: string) => void;
 	selectedTab: string;
 }
 
-export default function SimpleSidebar() {
+export default function Body() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [selectedTab, setSelectedTab] = React.useState<string>('Wallets');
 
