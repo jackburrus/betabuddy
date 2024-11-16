@@ -1,33 +1,5 @@
-# 🎭 Impersonator 🕵️‍♂️
+BetaBuddy 🛠️
 
-### Login into DApps by impersonating any Ethereum address via WalletConnect! <br />
+Streamline Ethereum dApp User Testing and Developer Collaboration
 
-<hr />
-
-## Website:
-
-**[https://www.impersonator.xyz/](https://www.impersonator.xyz/)**
-
-## Screenshots:
-
-![demo-by-address](./.github/demo-address-connected.png)
-
-(PS: Users won't be able to transact (obviously) as no private keys are being used here)
-
-## Local Installation
-
-1. Install required packages <br/>
-   `yarn install`
-
-2. Start local development server <br />
-   `yarn start`
-
-3. Build react project <br />
-   `yarn build`
-
-## Farcaster Tippers
-
-Thanks for all the following Farcaster users for tipping $DEGEN and supporting 🕵️ Impersonator:
-
-<!-- replace-degen-sponsors -->
-<!-- replace-degen-sponsors -->
+BetaBuddy is a powerful web app designed for Ethereum developers and user testing administrators. It bridges the gap between testing managers, frontend engineers, and user testers by providing seamless wallet management, real-time monitoring, and instant communication tools. Whether you’re participating in EthGlobal hackathons or developing the next big DeFi platform, BetaBuddy enhances your dApp development and user testing experience.
