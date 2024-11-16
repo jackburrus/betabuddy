@@ -37,7 +37,7 @@ export default function BulkUpload() {
 			console.log('\nStoring secret to Nillion...');
 
 			// Prepare the secret value by stringifying the JSON input
-			const secretValue = JSON.stringify(inputValue);
+			const secretValue = inputValue;
 
 			// Make the POST request to store the secret
 			const storeResult = await fetch(`${API_BASE}/api/apps/${APP_ID}/secrets`, {
@@ -91,9 +91,7 @@ export default function BulkUpload() {
 							Don't forget your secret phrase!
 						</Text>
 						<Textarea
-							placeholder={`{
-  "address": "0x..."
-}`}
+							placeholder={`0x..., 0x..., 0x...`}
 							value={inputValue}
 							onChange={(e) => setInputValue(e.target.value)}
 							resize="vertical"

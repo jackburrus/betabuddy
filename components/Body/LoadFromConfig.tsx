@@ -1,3 +1,4 @@
+import { useWallets } from '@/contexts/WalletsContext';
 import {
 	useDisclosure,
 	Button,
@@ -31,16 +32,16 @@ export default function LoadFromConfig() {
 	const [secretPhrase, setSecretPhrase] = useState('');
 	const [storeIds, setStoreIds] = useState<Store[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const { addWallet } = useWallets();
 
 	const handleUpload = async () => {
 		setIsLoading(true);
 		try {
-			const USER_SEED = `user_${encodeURIComponent(secretPhrase)}`;
 			const response = await fetch(`${API_BASE}/api/apps/${APP_ID}/store_ids`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'User-Seed': USER_SEED,
+					'User-Seed': secretPhrase,
 				},
 			});
 
@@ -63,9 +64,8 @@ export default function LoadFromConfig() {
 
 	const handleLoadSecret = async (store: Store) => {
 		try {
-			const USER_SEED = `user_${encodeURIComponent(secretPhrase)}`;
 			const secretResponse = await fetch(
-				`${API_BASE}/api/secret/retrieve/${store.store_id}?retrieve_as_nillion_user_seed=${USER_SEED}&secret_name=${store.secret_name}`,
+				`${API_BASE}/api/secret/retrieve/${store.store_id}?retrieve_as_nillion_user_seed=${secretPhrase}&secret_name=${store.secret_name}`,
 			);
 
 			if (!secretResponse.ok) {
@@ -73,7 +73,17 @@ export default function LoadFromConfig() {
 			}
 
 			const secretData = await secretResponse.json();
+			const secret = secretData.secret;
+
 			console.log(`Secret retrieved for ${store.secret_name}:`, secretData);
+			// Iterate over the JSON and add the values for each address key to the wallets context
+			if (secret) {
+				const parsedSecret = secret.split(',').map((address: string) => address.trim());
+				parsedSecret.forEach((address: string) => addWallet({ address }));
+				onClose();
+			} else {
+				console.error('Parsed secret is null or undefined');
+			}
 		} catch (error) {
 			console.error(`Error retrieving secret for ${store.store_id}:`, error);
 		}
