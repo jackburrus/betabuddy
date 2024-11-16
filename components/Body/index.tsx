@@ -32,7 +32,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
 	{ name: 'Profile', icon: FiUser },
 	{ name: 'Wallets', icon: IoWallet },
-	{ name: 'Chat', icon: FiMessageCircle },
+	// { name: 'Chat', icon: FiMessageCircle },
 	{ name: 'Settings', icon: FiSettings },
 ];
 
@@ -51,8 +51,8 @@ export default function SimpleSidebar() {
 				return <Profile />;
 			case 'Wallets':
 				return <Wallets />;
-			case 'Chat':
-				return <Chat />;
+			// case 'Chat':
+			// 	return <Chat />;
 			default:
 				return <Wallets />;
 		}
