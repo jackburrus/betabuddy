@@ -18,9 +18,11 @@ import {
 } from '@chakra-ui/react';
 import { useWallets } from '@/contexts/WalletsContext';
 import { isAddress } from 'ethers/lib/utils'; // Import ethers.js utility for address validation
+import { usePrivy } from '@privy-io/react-auth';
 
 export default function AddWalletCard() {
 	const { addWallet } = useWallets();
+	const { createWallet, user } = usePrivy();
 	const [walletAddress, setWalletAddress] = useState('');
 	const [walletConnectUrl, setWalletConnectUrl] = useState('');
 	const [state, setState] = useState<'initial' | 'submitting' | 'success'>('initial');
@@ -74,6 +76,16 @@ export default function AddWalletCard() {
 							onChange={(e: ChangeEvent<HTMLInputElement>) => setWalletAddress(e.target.value)}
 						/>
 					</FormControl>
+					<Button
+						disabled={!!user?.wallet?.address}
+						position="absolute"
+						bottom="4"
+						left="4"
+						colorScheme="blue"
+						onClick={createWallet}
+					>
+						Create Wallet
+					</Button>
 					<Button
 						colorScheme={state === 'success' ? 'green' : 'blue'}
 						isLoading={state === 'submitting'}

@@ -1,44 +1,32 @@
+import { Box, Button, Text } from '@chakra-ui/react';
+import { usePrivy } from '@privy-io/react-auth';
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
-import {
-	ConnectWallet,
-	Wallet,
-	WalletDropdown,
-	WalletDropdownBasename,
-	WalletDropdownFundLink,
-	WalletDropdownLink,
-	WalletDropdownDisconnect,
-} from '@coinbase/onchainkit/wallet';
-import { Address, Avatar, Name, Identity, EthBalance } from '@coinbase/onchainkit/identity';
-import { useAccount } from 'wagmi';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 const Profile: React.FC = () => {
-	const account = useAccount();
+	const { user, authenticated, login, logout, connectWallet, createWallet } = usePrivy();
+	console.log(user);
 	return (
-		<Box p={4}>
-			<Text fontSize="xl" fontWeight="bold">
-				Profile
-			</Text>
-			{/* <Wallet>
-				<ConnectWallet>
-					<Avatar className="h-6 w-6" />
-					<Name />
-				</ConnectWallet>
-				<WalletDropdown>
-					<Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-						<Avatar />
-						<Name />
-						<Address />
-						<EthBalance />
-					</Identity>
-					<WalletDropdownBasename />
-					<WalletDropdownLink icon="wallet" href="https://keys.coinbase.com">
-						Wallet
-					</WalletDropdownLink>
-					<WalletDropdownFundLink />
-					<WalletDropdownDisconnect />
-				</WalletDropdown>
-			</Wallet> */}
+		<Box p={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center" minH="100vh">
+			{!authenticated && (
+				<>
+					<Text fontSize="2xl" mb={4}>
+						Login with socials or connect your wallet
+					</Text>
+					<Box display="flex" flexDirection="row" gap={4}>
+						<Button onClick={() => (authenticated ? logout() : login())}>{authenticated ? 'Logout' : 'Login'}</Button>
+					</Box>
+				</>
+			)}
+			{authenticated && (
+				<>
+					<Text fontSize="2xl" mb={4}>
+						Welcome {user?.email?.address}
+					</Text>
+					<Box display="flex" flexDirection="row" gap={4}>
+						<Button onClick={logout}>Logout</Button>
+						<Button onClick={connectWallet}>Connect Wallet</Button>
+					</Box>
+				</>
+			)}
 		</Box>
 	);
 };

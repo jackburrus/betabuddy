@@ -21,6 +21,7 @@ import { Address, Avatar, Name, Identity, EthBalance } from '@coinbase/onchainki
 import { getConfig } from '@/app/wagmi'; // your import path may vary
 import { WalletsProvider } from '@/contexts/WalletsContext';
 import { useState } from 'react';
+import { PrivyProvider } from '@privy-io/react-auth';
 
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!;
 
@@ -35,7 +36,23 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
 						apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
 						chain={base} // add baseSepolia for testing
 					>
-						<WalletsProvider>{children}</WalletsProvider>
+						<PrivyProvider
+							config={{
+								// Customize Privy's appearance in your app
+								appearance: {
+									theme: 'light',
+									accentColor: '#676FFF',
+									logo: 'https://your-logo-url',
+								},
+								// Create embedded wallets for users who don't have a wallet
+								embeddedWallets: {
+									createOnLogin: 'users-without-wallets',
+								},
+							}}
+							appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+						>
+							<WalletsProvider>{children}</WalletsProvider>
+						</PrivyProvider>
 					</OnchainKitProvider>
 				</WagmiProvider>
 			</QueryClientProvider>
