@@ -49,7 +49,7 @@ export default function AddWalletCard() {
 	};
 
 	return (
-		<Flex bg={useColorModeValue('gray.50', 'gray.800')} minH="300px" position="relative">
+		<Flex bg={useColorModeValue('gray.50', 'gray.800')} minH="200px" position="relative">
 			<Container maxW={'lg'} bg={useColorModeValue('white', 'whiteAlpha.100')} boxShadow={'xl'} rounded={'lg'} p={6}>
 				<Heading as={'h2'} fontSize={{ base: 'xl', sm: '2xl' }} textAlign={'center'} mb={5}>
 					Add Wallet
@@ -74,35 +74,6 @@ export default function AddWalletCard() {
 							onChange={(e: ChangeEvent<HTMLInputElement>) => setWalletAddress(e.target.value)}
 						/>
 					</FormControl>
-					<Stack direction={'column'} spacing={'12px'}>
-						<FormControl>
-							<Select
-								placeholder="Options"
-								onChange={(e) => setShowWalletConnectUrl(e.target.value === 'walletConnect')}
-							>
-								<option value="walletConnect">Wallet Connect</option>
-							</Select>
-						</FormControl>
-						{showWalletConnectUrl && (
-							<FormControl>
-								<Input
-									variant={'solid'}
-									borderWidth={1}
-									color={'gray.50'}
-									_placeholder={{
-										color: 'gray.400',
-									}}
-									borderColor={useColorModeValue('gray.300', 'gray.700')}
-									id={'walletConnectUrl'}
-									type={'url'}
-									placeholder={'Wallet Connect URL: wc://...'}
-									aria-label={'Wallet Connect URL'}
-									value={walletConnectUrl}
-									onChange={(e: ChangeEvent<HTMLInputElement>) => setWalletConnectUrl(e.target.value)}
-								/>
-							</FormControl>
-						)}
-					</Stack>
 					<Button
 						colorScheme={state === 'success' ? 'green' : 'blue'}
 						isLoading={state === 'submitting'}

@@ -4,6 +4,7 @@ import AddWalletCard from './AddWalletCard';
 import { useWallets } from '@/contexts/WalletsContext';
 import WalletCard from './WalletCard';
 import BulkUpload from './BulkUpload';
+import LoadFromConfig from './LoadFromConfig';
 
 const Wallets: React.FC = () => {
 	const { wallets } = useWallets();
@@ -11,6 +12,7 @@ const Wallets: React.FC = () => {
 	return (
 		<div>
 			<BulkUpload />
+			<LoadFromConfig />
 			<Box
 				p={4}
 				borderRadius="md"

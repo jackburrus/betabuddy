@@ -15,7 +15,7 @@ import {
 	BoxProps,
 	FlexProps,
 } from '@chakra-ui/react';
-import { FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu, FiUsers, FiMessageCircle } from 'react-icons/fi';
+import { FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu, FiUsers, FiMessageCircle, FiUser } from 'react-icons/fi';
 import { IoWallet } from 'react-icons/io5';
 
 import { IconType } from 'react-icons';
@@ -23,14 +23,15 @@ import { ReactText } from 'react';
 import Wallets from './Wallets';
 import Users from './Users';
 import Chat from './Chat';
+import Profile from './Users';
 interface LinkItemProps {
 	name: string;
 	icon: IconType;
 }
 
 const LinkItems: Array<LinkItemProps> = [
+	{ name: 'Profile', icon: FiUser },
 	{ name: 'Wallets', icon: IoWallet },
-	{ name: 'Users', icon: FiUsers },
 	{ name: 'Chat', icon: FiMessageCircle },
 	{ name: 'Settings', icon: FiSettings },
 ];
@@ -46,10 +47,10 @@ export default function SimpleSidebar() {
 
 	const renderContent = () => {
 		switch (selectedTab) {
+			case 'Profile':
+				return <Profile />;
 			case 'Wallets':
 				return <Wallets />;
-			case 'Users':
-				return <Users />;
 			case 'Chat':
 				return <Chat />;
 			default:

@@ -7,11 +7,11 @@ export function getConfig() {
 		chains: [base], // add baseSepolia for testing
 		connectors: [
 			coinbaseWallet({
-				appName: 'OnchainKit',
+				appName: 'BetaBuddy',
 				preference: 'smartWalletOnly',
 				version: '4',
 			}),
-			// metaMask(),
+			metaMask(),
 			walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID! }),
 		],
 		storage: createStorage({

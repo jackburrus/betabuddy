@@ -8,7 +8,16 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
-
+import {
+	ConnectWallet,
+	Wallet,
+	WalletDropdown,
+	WalletDropdownBasename,
+	WalletDropdownFundLink,
+	WalletDropdownLink,
+	WalletDropdownDisconnect,
+} from '@coinbase/onchainkit/wallet';
+import { Address, Avatar, Name, Identity, EthBalance } from '@coinbase/onchainkit/identity';
 import { getConfig } from '@/app/wagmi'; // your import path may vary
 import { WalletsProvider } from '@/contexts/WalletsContext';
 import { useState } from 'react';
