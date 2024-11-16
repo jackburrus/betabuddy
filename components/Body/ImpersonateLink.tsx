@@ -61,7 +61,7 @@ export default function ImpersonateLink({
 	dapp,
 }: {
 	address: `0x${string}`;
-	index: number;
+	index: string;
 	dapp: { name: string; url: string; icon: string };
 }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -177,7 +177,7 @@ export default function ImpersonateLink({
 			// getCachedSession
 			const _showAddress = localStorage.getItem('showAddress') ?? undefined;
 			// WC V2
-			initWeb3Wallet(true, _showAddress);
+			// initWeb3Wallet(true, _showAddress);
 		}
 
 		setProvider(
@@ -268,41 +268,6 @@ export default function ImpersonateLink({
 		// eslint-disable-next-line
 	}, [latestTransaction, tenderlyForkId]);
 
-	const initWeb3Wallet = async (onlyIfActiveSessions?: boolean, _showAddress?: string) => {
-		const _web3wallet = await WalletKit.init({
-			core,
-			metadata: WCMetadata,
-		});
-
-		if (onlyIfActiveSessions) {
-			const sessions = _web3wallet.getActiveSessions();
-			const sessionsArray = Object.values(sessions);
-			console.log({ sessions });
-			if (sessionsArray.length > 0) {
-				const _address = sessionsArray[0].namespaces['eip155'].accounts[0].split(':')[2];
-				console.log({ _showAddress, _address });
-				setWeb3WalletSession(sessionsArray[0]);
-				setShowAddress(_showAddress && _showAddress.length > 0 ? _showAddress : _address);
-				if (!(_showAddress && _showAddress.length > 0)) {
-					localStorage.setItem('showAddress', _address);
-				}
-				setAddress(_address);
-				setUri(`wc:${sessionsArray[0].pairingTopic}@2?relay-protocol=irn&symKey=xxxxxx`);
-				setWeb3Wallet(_web3wallet);
-				setIsConnected(true);
-			}
-		} else {
-			setWeb3Wallet(_web3wallet);
-			if (_showAddress) {
-				setShowAddress(_showAddress);
-				setAddress(_showAddress);
-			}
-		}
-
-		// for debugging
-		(window as any).w3 = _web3wallet;
-	};
-
 	const resolveAndValidateAddress = async () => {
 		let isValid;
 		let _address = address;
@@ -334,51 +299,6 @@ export default function ImpersonateLink({
 		}
 
 		return { isValid, _address: _address };
-	};
-
-	const initWalletConnect = async () => {
-		setLoading(true);
-		const { isValid } = await resolveAndValidateAddress();
-
-		if (isValid) {
-			const { version } = parseUri(uri);
-
-			try {
-				if (version === 1) {
-					toast({
-						title: "Couldn't Connect",
-						description: 'The dapp is still using the deprecated WalletConnect V1',
-						status: 'error',
-						isClosable: true,
-						duration: 8000,
-					});
-					setLoading(false);
-
-					// let _legacySignClient = new LegacySignClient({ uri });
-
-					// if (!_legacySignClient.connected) {
-					//   await _legacySignClient.createSession();
-					// }
-
-					// setLegacySignClient(_legacySignClient);
-					// setUri(_legacySignClient.uri);
-				} else {
-					await initWeb3Wallet();
-				}
-			} catch (err) {
-				console.error(err);
-				toast({
-					title: "Couldn't Connect",
-					description: 'Refresh dApp and Connect again',
-					status: 'error',
-					isClosable: true,
-					duration: 2000,
-				});
-				setLoading(false);
-			}
-		} else {
-			setLoading(false);
-		}
 	};
 
 	const initIFrame = async (_inputAppUrl = inputAppUrl) => {
@@ -680,7 +600,6 @@ export default function ImpersonateLink({
 			<Modal isOpen={isOpen} onClose={onClose} size="6xl">
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Impersonate Link</ModalHeader>
 					{dapp.url && (
 						<Box
 							as="iframe"
@@ -689,10 +608,6 @@ export default function ImpersonateLink({
 							title="app"
 							src={dapp.url}
 							key={iframeKey}
-							borderWidth="1px"
-							borderStyle={'solid'}
-							borderColor="white"
-							bg="white"
 							ref={iframeRef}
 							onLoad={() => setIsIFrameLoading(false)}
 						/>

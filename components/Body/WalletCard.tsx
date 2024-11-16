@@ -18,7 +18,7 @@ export default function WalletCard({ wallet }: { wallet: Wallet }) {
 			<Box mt={4}>
 				<Box display="grid" gridTemplateColumns="repeat(5, 1fr)" marginTop={4} gap={4}>
 					{sampleDappLinks.map((dapp, index) => (
-						<ImpersonateLink address={wallet.address} index={index} dapp={dapp} />
+						<ImpersonateLink key={index} address={wallet.address} index={wallet.address} dapp={dapp} />
 					))}
 				</Box>
 			</Box>

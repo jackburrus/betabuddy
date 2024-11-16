@@ -15,6 +15,7 @@ import {
 	BoxProps,
 	FlexProps,
 	useToast,
+	Image,
 } from '@chakra-ui/react';
 import networksList from 'evm-rpcs-list';
 import { FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu, FiUsers, FiMessageCircle, FiUser } from 'react-icons/fi';
@@ -156,9 +157,7 @@ const SidebarContent = ({ onClose, onTabSelect, selectedTab, ...rest }: SidebarP
 			{...rest}
 		>
 			<Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-				<Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-					🤝 BetaBuddy
-				</Text>
+				<Image mt="2" height={'14'} src="/logo.png" />
 				<CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
 			</Flex>
 			{LinkItems.map((link) => (

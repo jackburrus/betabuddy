@@ -1,5 +1,4 @@
-BetaBuddy 🛠️
+BetaBuddy 🤝
 
-Streamline Ethereum dApp User Testing and Developer Collaboration
 
-BetaBuddy is a powerful web app designed for Ethereum developers and user testing administrators. It bridges the gap between testing managers, frontend engineers, and user testers by providing seamless wallet management, real-time monitoring, and instant communication tools. Whether you’re participating in EthGlobal hackathons or developing the next big DeFi platform, BetaBuddy enhances your dApp development and user testing experience.
+BetaBuddy is a web app for tracking Ethereum wallets across the ecosystem. It is a superpowered "read-only" tool for developers and traders alike. Users can upload any number of comma-delineated addresses into our bulk upload tool to keep track of wallets across the blockchain. The wallets are stored on Nillion and can be accessed by a secret phrase that is set when the user uploads the addresses. These addresses can then be loaded back into the dashboard by providing the secret key. OnChainKit is used to render up to date information about each of the addresses including their ens name, as well as social profiles.
