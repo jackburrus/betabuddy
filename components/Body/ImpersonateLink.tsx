@@ -1,5 +1,4 @@
-import { Button, Modal, ModalContent, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-
+import { Box, Button, Modal, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import { useSafeInject } from '@/contexts/SafeInjectContext';
 import { SelectedNetworkOption, TxnDataType } from '@/types';
 import { useToast } from '@chakra-ui/react';
@@ -15,10 +14,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
 import { FiSettings, FiUser } from 'react-icons/fi';
 import { IoWallet } from 'react-icons/io5';
+
 interface LinkItemProps {
 	name: string;
 	icon: IconType;
 }
+
 const WCMetadata = {
 	name: 'Impersonator',
 	description: 'Login to dapps as any address',
@@ -70,6 +71,57 @@ export default function ImpersonateLink({
 	let urlFromCache: string | null = null;
 	let chainFromURL: string | null = null;
 	let tenderlyForkIdCache: string | null = null;
+
+	const handleOpenIframe = () => {
+		const connectAddress = async () => {
+			if (!address) {
+				toast({
+					title: 'Address is required.',
+					status: 'error',
+					duration: 3000,
+					isClosable: true,
+				});
+				return;
+			}
+
+			try {
+				setLoading(true);
+				const provider = new ethers.providers.JsonRpcProvider();
+				const resolvedAddress = await provider.resolveName(address);
+				if (resolvedAddress) {
+					setAddress(resolvedAddress);
+					setIsAddressValid(true);
+					toast({
+						title: 'Address connected successfully.',
+						status: 'success',
+						duration: 3000,
+						isClosable: true,
+					});
+				} else {
+					setIsAddressValid(false);
+					toast({
+						title: 'Invalid address.',
+						status: 'error',
+						duration: 3000,
+						isClosable: true,
+					});
+				}
+			} catch (error) {
+				console.error('Error connecting address:', error);
+				toast({
+					title: 'Error connecting address.',
+					status: 'error',
+					duration: 3000,
+					isClosable: true,
+				});
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		connectAddress();
+		onOpen();
+	};
 
 	if (typeof window !== 'undefined') {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -622,12 +674,30 @@ export default function ImpersonateLink({
 
 	return (
 		<>
-			<Button key={index} onClick={onOpen}>
-				{dapp.name}
+			<Button key={index} onClick={handleOpenIframe} p={0} w="50px" h="50px" padding={2}>
+				<img src={dapp.icon} alt={dapp.name} width="30px" height="30px" />
 			</Button>
-			<Modal isOpen={isOpen} onClose={onClose}>
+			<Modal isOpen={isOpen} onClose={onClose} size="6xl">
 				<ModalOverlay />
-				<ModalContent>Hello Iframe</ModalContent>
+				<ModalContent>
+					<ModalHeader>Impersonate Link</ModalHeader>
+					{dapp.url && (
+						<Box
+							as="iframe"
+							w="75vw"
+							h={{ base: '33rem', md: '35rem', lg: '38rem' }}
+							title="app"
+							src={dapp.url}
+							key={iframeKey}
+							borderWidth="1px"
+							borderStyle={'solid'}
+							borderColor="white"
+							bg="white"
+							ref={iframeRef}
+							onLoad={() => setIsIFrameLoading(false)}
+						/>
+					)}
+				</ModalContent>
 			</Modal>
 		</>
 	);
