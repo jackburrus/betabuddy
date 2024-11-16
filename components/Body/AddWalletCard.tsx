@@ -36,6 +36,11 @@ export default function AddWalletCard() {
 			console.log('adding wallet', walletAddress, walletConnectUrl);
 			addWallet({ address: walletAddress, walletConnectUrl: showWalletConnectUrl ? walletConnectUrl : undefined });
 			setState('success');
+			// Reset form fields after successful submission
+			setWalletAddress('');
+			setWalletConnectUrl('');
+			setShowWalletConnectUrl(false);
+			setState('initial');
 		} else {
 			console.log('invalid wallet address', walletAddress);
 			setError(true);

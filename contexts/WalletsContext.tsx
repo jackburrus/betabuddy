@@ -16,14 +16,24 @@ const WalletsContext = createContext<WalletsContextProps | undefined>(undefined)
 export const WalletsProvider = ({ children }: { children: ReactNode }) => {
 	const [wallets, setWallets] = useState<Wallet[]>([]);
 
+	const logWallets = (action: string) => {
+		console.log(`${action} wallet. Current wallets:`, wallets);
+	};
+
 	const addWallet = (wallet: Wallet) => {
-		console.log('adding wallet', wallet);
-		setWallets((prevWallets) => [...prevWallets, wallet]);
+		setWallets((prevWallets) => {
+			const newWallets = [...prevWallets, wallet];
+			logWallets('Added');
+			return newWallets;
+		});
 	};
 
 	const removeWallet = (address: string) => {
-		console.log('removing wallet', address);
-		setWallets((prevWallets) => prevWallets.filter((wallet) => wallet.address !== address));
+		setWallets((prevWallets) => {
+			const newWallets = prevWallets.filter((wallet) => wallet.address !== address);
+			logWallets('Removed');
+			return newWallets;
+		});
 	};
 
 	return <WalletsContext.Provider value={{ wallets, addWallet, removeWallet }}>{children}</WalletsContext.Provider>;
